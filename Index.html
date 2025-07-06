@@ -1,0 +1,140 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Amazing Animal Quizz</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      margin: 0;
+      background: #f0f8ff;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .question-title {
+      font-weight: bold;
+    }
+    .options label {
+      display: block;
+      margin: 5px 0;
+    }
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4caf50;
+      color: white;
+    }
+    #result {
+      text-align: center;
+      font-size: 24px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>The Amazing Animal Quizz</h1>
+    <p>Answer 5 questions to find out who you really are!</p>
+    <form id="quizForm">
+      <div class="question">
+        <div class="question-title">1. What is your main trait?</div>
+        <div class="options">
+          <label><input type="radio" name="q1" value="elephant"> Kind and caring</label>
+          <label><input type="radio" name="q1" value="cat"> Sassy</label>
+          <label><input type="radio" name="q1" value="dolphin"> Hardworking and fair</label>
+          <label><input type="radio" name="q1" value="turtle"> Slow and steady</label>
+          <label><input type="radio" name="q1" value="koala"> Creative</label>
+        </div>
+      </div>
+      <div class="question">
+        <div class="question-title">2. What is your favorite color?</div>
+        <div class="options">
+          <label><input type="radio" name="q2" value="elephant"> Blue</label>
+          <label><input type="radio" name="q2" value="cat"> Teal</label>
+          <label><input type="radio" name="q2" value="dolphin"> Pink</label>
+          <label><input type="radio" name="q2" value="turtle"> Green</label>
+          <label><input type="radio" name="q2" value="koala"> Yellow</label>
+        </div>
+      </div>
+      <div class="question">
+        <div class="question-title">3. What is your favorite food?</div>
+        <div class="options">
+          <label><input type="radio" name="q3" value="elephant"> Cheeseburger</label>
+          <label><input type="radio" name="q3" value="cat"> Fish</label>
+          <label><input type="radio" name="q3" value="dolphin"> Hot dogs</label>
+          <label><input type="radio" name="q3" value="turtle"> Pizza</label>
+          <label><input type="radio" name="q3" value="koala"> Candy</label>
+        </div>
+      </div>
+      <div class="question">
+        <div class="question-title">4. What is your favorite thing to do?</div>
+        <div class="options">
+          <label><input type="radio" name="q4" value="elephant"> Reading</label>
+          <label><input type="radio" name="q4" value="cat"> Playing outside</label>
+          <label><input type="radio" name="q4" value="dolphin"> Playing video games</label>
+          <label><input type="radio" name="q4" value="turtle"> Swimming</label>
+          <label><input type="radio" name="q4" value="koala"> Drawing</label>
+        </div>
+      </div>
+      <div class="question">
+        <div class="question-title">5. What is your favorite place to go have fun?</div>
+        <div class="options">
+          <label><input type="radio" name="q5" value="elephant"> Candy store</label>
+          <label><input type="radio" name="q5" value="cat"> Playground</label>
+          <label><input type="radio" name="q5" value="dolphin"> Swimming pool</label>
+          <label><input type="radio" name="q5" value="turtle"> Home</label>
+          <label><input type="radio" name="q5" value="koala"> Outdoor</label>
+        </div>
+      </div>
+      <button type="submit">See My Animal!</button>
+    </form>
+    <div id="result"></div>
+  </div>
+  <script>
+    const form = document.getElementById('quizForm');
+    const resultDiv = document.getElementById('result');form.addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const answers = [form.q1.value, form.q2.value, form.q3.value, form.q4.value, form.q5.value];
+  const scores = {};
+
+  for (let i = 0; i < answers.length; i++) {
+    const animal = answers[i];
+    if (!scores[animal]) scores[animal] = 0;
+    scores[animal] += Math.pow(10, 4 - i); // weight by importance
+  }
+
+  let topAnimal = null;
+  let topScore = -1;
+  for (let [animal, score] of Object.entries(scores)) {
+    if (score > topScore) {
+      topScore = score;
+      topAnimal = animal;
+    }
+  }
+
+  form.style.display = 'none';
+  resultDiv.style.display = 'block';
+  resultDiv.innerHTML = `You are a <strong>${topAnimal.toUpperCase()}</strong>!<br><br>(Insert description here)`;
+});
+
+  </script>
+</body>
+</html>
