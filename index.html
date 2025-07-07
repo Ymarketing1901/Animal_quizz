@@ -113,26 +113,36 @@
   e.preventDefault();
 
   const answers = [form.q1.value, form.q2.value, form.q3.value, form.q4.value, form.q5.value];
-  const scores = {};
+  const counts = {};
 
-  for (let i = 0; i < answers.length; i++) {
-    const animal = answers[i];
-    if (!scores[animal]) scores[animal] = 0;
-    scores[animal] += Math.pow(10, 4 - i); // weight by importance
+  answers.forEach(animal => {
+    if (!counts[animal]) counts[animal] = 0;
+    counts[animal]++;
+  });
+
+  let topAnimals = [];
+  let maxCount = 0;
+  for (let [animal, count] of Object.entries(counts)) {
+    if (count > maxCount) {
+      maxCount = count;
+      topAnimals = [animal];
+    } else if (count === maxCount) {
+      topAnimals.push(animal);
+    }
   }
 
-  let topAnimal = null;
-  let topScore = -1;
-  for (let [animal, score] of Object.entries(scores)) {
-    if (score > topScore) {
-      topScore = score;
-      topAnimal = animal;
+  let finalAnimal = topAnimals[0];
+  if (topAnimals.length > 1) {
+    // Tie-breaker: use answer to first question
+    const firstChoice = answers[0];
+    if (topAnimals.includes(firstChoice)) {
+      finalAnimal = firstChoice;
     }
   }
 
   form.style.display = 'none';
   resultDiv.style.display = 'block';
-  resultDiv.innerHTML = `You are a <strong>${topAnimal.toUpperCase()}</strong>!<br><br>(Insert description here)`;
+  resultDiv.innerHTML = `You are a <strong>${finalAnimal.toUpperCase()}</strong>!<br><br>(Insert description here)`;
 });
 
   </script>
